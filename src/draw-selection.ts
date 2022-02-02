@@ -263,7 +263,12 @@ function measureRange(view: EditorView, range: SelectionRange): Piece[] {
       }
     }
     if (horizontal.length == 0) addSpan(start, from == null, end, to == null, view.textDirection)
- 
+
+    let base = getBase(view)
+    let lineBlock = view.lineBlockAt(start + 1)
+    top = Math.min(top, base.top + lineBlock.top + 4) // 4px adjustment to account for padding on contentDOM
+    bottom = Math.max(bottom, top + lineBlock.height)
+
     return {top, bottom, horizontal}
   }
 
